@@ -4,8 +4,8 @@ from twisted.internet import defer, reactor
 from twisted.internet.defer import CancelledError
 from twisted.trial import unittest
 
-from stompest.async.util import InFlightOperations
 from stompest.error import StompCancelledError
+from stompest.twisted.util import InFlightOperations
 
 logging.basicConfig(level=logging.DEBUG)
 

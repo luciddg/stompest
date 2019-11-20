@@ -11,7 +11,7 @@ This package provides the asynchronous STOMP client based upon the `stompest <ht
 Installation
 ============
 
-You may install this package via ``pip install stompest.async`` or manually via ``python setup.py install``.
+You may install this package via ``pip install stompest.twisted`` or manually via ``python setup.py install``.
 
 Questions or Suggestions?
 =========================

@@ -7,12 +7,12 @@ from twisted.python import failure
 from stompest.error import StompConnectionError, StompCancelledError, StompProtocolError
 from stompest.protocol import StompSpec
 
-from stompest.async.util import InFlightOperations, WaitingDeferred, sendToErrorDestination
+from stompest.twisted.util import InFlightOperations, WaitingDeferred, sendToErrorDestination
 
 LOG_CATEGORY = __name__
 
 class Listener(object):
-    """This base class defines the interface for the handlers of possible asynchronous STOMP connection events. You may implement any subset of these event handlers and add the resulting listener to the :class:`~.async.client.Stomp` connection.
+    """This base class defines the interface for the handlers of possible asynchronous STOMP connection events. You may implement any subset of these event handlers and add the resulting listener to the :class:`~.twisted.client.Stomp` connection.
     """
     def __str__(self):
         return self.__class__.__name__
@@ -173,7 +173,7 @@ class ReceiptListener(Listener):
 class SubscriptionListener(Listener):
     """Corresponds to a STOMP subscription.
     
-    :param handler: A callable :obj:`f(client, frame)` which accepts a :class:`~.async.client.Stomp` connection and the received :class:`~.StompFrame`.
+    :param handler: A callable :obj:`f(client, frame)` which accepts a :class:`~.twisted.client.Stomp` connection and the received :class:`~.StompFrame`.
     :param ack: Check this option if you wish to automatically ack **MESSAGE** frames after they were handled (successfully or not).
     :param errorDestination: If a frame was not handled successfully, forward a copy of the offending frame to this destination. Example: ``errorDestination='/queue/back-to-square-one'``
     :param onMessageFailed: You can specify a custom error handler which must be a callable with signature :obj:`f(connection, failure, frame, errorDestination)`. Note that a non-trivial choice of this error handler overrides the default behavior (forward frame to error destination and ack it).

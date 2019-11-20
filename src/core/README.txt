@@ -18,7 +18,7 @@ This package is thoroughly unit tested and production hardened for the functiona
 Asynchronous Client
 ===================
 
-The asynchronous client is based on `Twisted <http://twistedmatrix.com/>`_, a very mature and powerful asynchronous programming framework. In order to keep the stompest package self-consistent, the asynchronous client is available as a separate package `stompest.async <https://pypi.python.org/pypi/stompest.async/>`_.
+The asynchronous client is based on `Twisted <http://twistedmatrix.com/>`_, a very mature and powerful asynchronous programming framework. In order to keep the stompest package self-consistent, the asynchronous client is available as a separate package `stompest.twisted <https://pypi.python.org/pypi/stompest.twisted/>`_.
 
 Installation
 ============

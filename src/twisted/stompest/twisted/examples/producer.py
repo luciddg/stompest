@@ -5,8 +5,8 @@ from twisted.internet import defer, task
 
 from stompest.config import StompConfig
 
-from stompest.async import Stomp
-from stompest.async.listener import ReceiptListener
+from stompest.twisted import Stomp
+from stompest.twisted.listener import ReceiptListener
 
 class Producer(object):
     QUEUE = '/queue/testIn'

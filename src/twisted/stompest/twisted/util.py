@@ -79,7 +79,7 @@ def sendToErrorDestination(connection, failure, frame, errorDestination):
 
     This is the default error handler for failed **MESSAGE** handlers: forward the offending frame to the error destination (if given) and ack the frame. As opposed to earlier versions, It may be used as a building block for custom error handlers.
 
-    .. seealso :: The **onMessageFailed** argument of the :meth:`~.async.client.Stomp.subscribe` method.
+    .. seealso :: The **onMessageFailed** argument of the :meth:`~.twisted.client.Stomp.subscribe` method.
     """
     if not errorDestination:
         return

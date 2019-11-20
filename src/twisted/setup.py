@@ -14,7 +14,7 @@ if (sys.version_info[:2] < (2, 7)) or (sys.version_info[0] == 3 and sys.version_
     sys.exit(-1)
 
 setup(
-    name='stompest.async',
+    name='stompest.twisted',
     version=FULL_VERSION,
     author='Jan Müller',
     author_email='nikipore@gmail.com',
@@ -32,7 +32,7 @@ setup(
         , 'twisted >= 16.4.0'
     ],
     tests_require=['mock'] if sys.version_info[0] == 2 else [],
-    test_suite='stompest.async.tests',
+    test_suite='stompest.twisted.tests',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Framework :: Twisted',

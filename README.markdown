@@ -4,7 +4,7 @@ stomp, stomper, stompest!
 stompest is a full-featured [STOMP](http://stomp.github.com/) [1.0](http://stomp.github.com//stomp-specification-1.0.html), [1.1](http://stomp.github.com//stomp-specification-1.1.html), and [1.2](http://stomp.github.com//stomp-specification-1.2.html) implementation for Python 2.7 and Python 3 (versions 3.3 and higher) including both synchronous and asynchronous clients:
 
 * The `sync.Stomp` client is dead simple. It does not assume anything about your concurrency model (thread vs process) or force you to use it any particular way. It gets out of your way and lets you do what you want.
-* The `async.Stomp` client is based on [Twisted](http://twistedmatrix.com/), a very mature and powerful asynchronous programming framework. It supports destination specific message and error handlers (with default "poison pill" error handling), concurrent message processing, graceful shutdown, and connect and disconnect timeouts.
+* The `twisted.Stomp` client is based on [Twisted](http://twistedmatrix.com/), a very mature and powerful asynchronous programming framework. It supports destination specific message and error handlers (with default "poison pill" error handling), concurrent message processing, graceful shutdown, and connect and disconnect timeouts.
 
 Both clients support [TLS/SSL](https://en.wikipedia.org/wiki/Transport_Layer_Security) for secure connections to ActiveMQ, and both clients make use of a generic set of components in the `protocol` module, each of which can be used independently to roll your own STOMP client:
 
@@ -85,7 +85,7 @@ Clients
 * Built on top of the abstract layers, the synchronous client adds a TCP connection and a synchronous API.
 * The concurrency scheme (synchronous, threaded, ...) is free to choose by the user.
 
-`async`
+`twisted`
 -------
 * Based on the Twisted asynchronous framework.
 * Fully unit-tested including a simulated STOMP broker.
@@ -110,9 +110,8 @@ A few random thoughts:
 
 0. I still do accept (and test) pull requests and bugfixes (if they come with complete and working unit and integration tests), but the Python 3 port was my last big effort for stompest.
 1. I believe that fully implementing the (half-complete) SSL/TLS capability is the most urgent enhancement because apart of that I consider stompest pretty much feature complete and very stable up to Python 3.6; the rate of newly discovered bugs is very low indeed.
-2. For Python 3.7, the `stompest.async` package must be renamed; I believe `stompest.twisted` would be appropriate. If someone creates a pull request, I'll test it and rename the PyPI package accordingly.
-3. A port of the Twisted client to `asyncio` would make a lot of sense. If someone creates a pull request, I'll test it and create a new PyPI package.
-4. If someone would like to take over the project, please let me know. I would actively consult as an *éminence grise*.
+2. A port of the Twisted client to `asyncio` would make a lot of sense. If someone creates a pull request, I'll test it and create a new PyPI package.
+3. If someone would like to take over the project, please let me know. I would actively consult as an *éminence grise*.
 
 To Do
 =====

@@ -6,9 +6,8 @@ from twisted.internet import defer, reactor
 from stompest.config import StompConfig
 from stompest.protocol import StompSpec
 
-from stompest.async import Stomp
-from stompest.async.listener import SubscriptionListener
-
+from stompest.twisted import Stomp
+from stompest.twisted.listener import SubscriptionListener
 
 class Consumer(object):
     QUEUE = '/queue/testOut'

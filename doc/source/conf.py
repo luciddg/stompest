@@ -12,15 +12,15 @@
 # serve to show the default.
 
 import os, sys
-for path in ('async', 'core'):
+for path in ('core', 'twisted'):
     sys.path.insert(0, os.path.join('../../src', path))
 
 import stompest
 import stompest.sync
 import stompest.sync.examples
-import stompest.async
-import stompest.async.examples
-import stompest.async.listener
+import stompest.twisted
+import stompest.twisted.examples
+import stompest.twisted.listener
 import stompest.config
 import stompest.protocol
 import stompest.error

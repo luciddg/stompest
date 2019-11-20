@@ -4,9 +4,9 @@ import logging
 from twisted.internet import reactor, defer, task
 from twisted.trial import unittest
 
-from stompest import async, sync
-from stompest.async.listener import SubscriptionListener, ReceiptListener
-from stompest.async.util import sendToErrorDestinationAndRaise
+from stompest import sync, twisted
+from stompest.twisted.listener import SubscriptionListener, ReceiptListener
+from stompest.twisted.util import sendToErrorDestinationAndRaise
 from stompest.config import StompConfig
 from stompest.error import StompConnectionError, StompProtocolError
 from stompest.protocol import StompSpec, commands
@@ -126,7 +126,7 @@ class HandlerExceptionWithErrorQueueIntegrationTestCase(AsyncClientBaseTestCase)
             defer.returnValue(None)
 
         config = self.getConfig(version)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
 
         try:
             yield client.connect(host=VIRTUALHOST, versions=[version])
@@ -164,7 +164,7 @@ class HandlerExceptionWithErrorQueueIntegrationTestCase(AsyncClientBaseTestCase)
         else:
             raise
 
-        client = async.Stomp(config) # take a fresh client to prevent replay (we were disconnected by an error)
+        client = twisted.Stomp(config) # take a fresh client to prevent replay (we were disconnected by an error)
 
         # reconnect and subscribe again - consuming second message then disconnecting
         yield client.connect(host=VIRTUALHOST)
@@ -195,7 +195,7 @@ class HandlerExceptionWithErrorQueueIntegrationTestCase(AsyncClientBaseTestCase)
     @defer.inlineCallbacks
     def test_onhandlerException_ackMessage_filterReservedHdrs_send2ErrorQ_and_no_disconnect(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
 
         # connect
         yield client.connect(host=VIRTUALHOST)
@@ -228,7 +228,7 @@ class HandlerExceptionWithErrorQueueIntegrationTestCase(AsyncClientBaseTestCase)
     @defer.inlineCallbacks
     def test_onhandlerException_disconnect(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
 
         yield client.connect(host=VIRTUALHOST)
         client.send(self.queue, self.frame1, self.msg1Hdrs)
@@ -249,7 +249,7 @@ class HandlerExceptionWithErrorQueueIntegrationTestCase(AsyncClientBaseTestCase)
             raise
 
         # reconnect and subscribe again - consuming retried message and disconnecting
-        client = async.Stomp(config) # take a fresh client to prevent replay (we were disconnected by an error)
+        client = twisted.Stomp(config) # take a fresh client to prevent replay (we were disconnected by an error)
         yield client.connect(host=VIRTUALHOST)
         client.subscribe(self.queue, {StompSpec.ACK_HEADER: StompSpec.ACK_CLIENT_INDIVIDUAL}, listener=SubscriptionListener(self._eatOneFrameAndDisconnect))
 
@@ -269,7 +269,7 @@ class GracefulDisconnectTestCase(AsyncClientBaseTestCase):
     @defer.inlineCallbacks
     def test_onDisconnect_waitForOutstandingMessagesToFinish(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
         client.add(ReceiptListener(1.0))
 
         # connect
@@ -313,7 +313,7 @@ class SubscribeTestCase(AsyncClientBaseTestCase):
     @defer.inlineCallbacks
     def test_unsubscribe(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
 
         yield client.connect(host=VIRTUALHOST)
 
@@ -337,7 +337,7 @@ class SubscribeTestCase(AsyncClientBaseTestCase):
     def test_replay(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
 
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
         yield client.connect(host=VIRTUALHOST)
         client.subscribe(self.queue, {StompSpec.ACK_HEADER: StompSpec.ACK_CLIENT_INDIVIDUAL}, listener=SubscriptionListener(self._eatFrame))
         client.send(self.queue, self.frame)
@@ -389,7 +389,7 @@ class NackTestCase(AsyncClientBaseTestCase):
             defer.returnValue(None)
 
         config = self.getConfig(version)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
         try:
             yield client.connect(host=VIRTUALHOST, versions=[version])
 
@@ -425,7 +425,7 @@ class TransactionTestCase(AsyncClientBaseTestCase):
     @defer.inlineCallbacks
     def test_transaction_commit(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
         client.add(ReceiptListener())
         yield client.connect(host=VIRTUALHOST)
         client.subscribe(self.queue, {StompSpec.ACK_HEADER: StompSpec.ACK_CLIENT_INDIVIDUAL, StompSpec.ID_HEADER: '4711'}, listener=SubscriptionListener(self._eatFrame, ack=True))
@@ -448,7 +448,7 @@ class TransactionTestCase(AsyncClientBaseTestCase):
     @defer.inlineCallbacks
     def test_transaction_abort(self):
         config = self.getConfig(StompSpec.VERSION_1_0)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
         client.add(ReceiptListener())
         yield client.connect(host=VIRTUALHOST)
         client.subscribe(self.queue, {StompSpec.ACK_HEADER: StompSpec.ACK_CLIENT_INDIVIDUAL, StompSpec.ID_HEADER: '4711'}, listener=SubscriptionListener(self._eatFrame, ack=True))
@@ -473,7 +473,7 @@ class HeartBeatTestCase(AsyncClientBaseTestCase):
     @defer.inlineCallbacks
     def test_heart_beat(self):
         config = self.getConfig(StompSpec.VERSION_1_1, self.port or PORT)
-        client = async.Stomp(config)
+        client = twisted.Stomp(config)
         yield client.connect(host=VIRTUALHOST, heartBeats=(250, 250))
         disconnected = client.disconnected
 

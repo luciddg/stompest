@@ -6,8 +6,8 @@ from twisted.internet import reactor, defer
 from stompest.config import StompConfig
 from stompest.protocol import StompSpec
 
-from stompest.async import Stomp
-from stompest.async.listener import SubscriptionListener
+from stompest.twisted import Stomp
+from stompest.twisted.listener import SubscriptionListener
 
 class IncrementTransformer(object):
     IN_QUEUE = '/queue/testIn'

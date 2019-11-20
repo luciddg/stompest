@@ -1,5 +1,5 @@
 class StompConfig(object):
-    """This is a container for those configuration options which are common to both clients (sync and async) and are needed to establish a STOMP connection. All parameters are available as attributes with the same name of this object.
+    """This is a container for those configuration options which are common to both clients (sync and twisted) and are needed to establish a STOMP connection. All parameters are available as attributes with the same name of this object.
 
     :param uri: A failover URI as it is accepted by :class:`~.StompFailoverUri`.
     :param login: The login for the STOMP brokers. The default is :obj:`None`, which means that no **login** header will be sent.

@@ -55,17 +55,17 @@ Set up a new virtualenv for stompest::
   virtualenv venv
   . venv/bin/activate
 
-Running the async integration tests
+Running the twisted integration tests
 -----------------------------------
 
-In this example we will run the async (non-core) integration tests. We must
+In this example we will run the twisted (non-core) integration tests. We must
 install Twisted's tls support so the SSL tests can pass::
 
   pip install twisted[tls]
 
-Now, switch to the "async" code location and run the test suite::
+Now, switch to the "twisted" code location and run the test suite::
 
-  cd src/async
+  cd src/twisted
   make test
 
 The integration tests should pass.
@@ -85,7 +85,7 @@ tests to reflect this. You can run your single test while you develop.
 
 ::
 
-  python -m unittest stompest.async.tests.async_client_test.AsyncClientConnectErrorTestCase
+  python -m unittest stompest.twisted.tests.twisted_client_test.AsyncClientConnectErrorTestCase
 
 This allows you to test only the specific code you may be editing.
 
