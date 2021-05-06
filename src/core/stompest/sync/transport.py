@@ -20,6 +20,7 @@ class StompFrameTransport(object):
         self.port = port
         self.sslContext = sslContext
 
+        self._poll = None
         self._socket = None
         self._parser = self.factory()
 
@@ -39,10 +40,7 @@ class StompFrameTransport(object):
 
         startTime = time.time()
         try:
-            if timeout is None:
-                files, _, _ = select.select([self._socket], [], [])
-            else:
-                files, _, _ = select.select([self._socket], [], [], timeout)
+            result = self._poll.poll()
         except OSError as e:
             # In Python 3.5+, select itself handles retries on EINTR so this
             # error should never be raised spuriously. We hence don't want to
@@ -58,7 +56,7 @@ class StompFrameTransport(object):
                 return retry()
             raise
 
-        return bool(files)
+        return bool(result)
 
     def connect(self, timeout=None):
         try:
@@ -67,11 +65,20 @@ class StompFrameTransport(object):
             if self.sslContext:
                 self._socket = self.sslContext.wrap_socket(self._socket, server_hostname=self.host)
             self._socket.connect((self.host, self.port))
+            self._poll = select.poll()
+            self._poll.register(self._socket)
         except IOError as e:
             raise StompConnectionError('Could not establish connection [%s]' % e)
         self._parser.reset()
 
     def disconnect(self):
+        try:
+            self._poll and self._socket and self._poll.unregister(self._socket)
+        except:
+            pass
+        finally:
+            self._poll = None
+
         try:
             self._socket and self._socket.close()
         except IOError as e:
