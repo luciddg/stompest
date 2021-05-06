@@ -40,7 +40,7 @@ class StompFrameTransport(object):
 
         startTime = time.time()
         try:
-            result = self._poll.poll()
+            result = self._poll.poll(timeout)
         except OSError as e:
             # In Python 3.5+, select itself handles retries on EINTR so this
             # error should never be raised spuriously. We hence don't want to
