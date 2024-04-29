@@ -110,27 +110,23 @@ class Stomp(object):
         else:
             raise StompConnectionError('Already connected to %s' % self._transport)
 
-        try:
-            for (broker, connectDelay) in self._failover:
-                transport = self._transportFactory(
-                    broker['host'], broker['port'], sslContext=self._config.sslContext,
-                )
-                if connectDelay:
-                    self.log.debug('Delaying connect attempt for %d ms' % int(connectDelay * 1000))
-                    time.sleep(connectDelay)
-                self.log.info('Connecting to %s ...' % transport)
-                try:
-                    transport.connect(connectTimeout)
-                except StompConnectionError as e:
-                    self.log.warning('Could not connect to %s [%s]' % (transport, e))
-                else:
-                    self.log.info('Connection established')
-                    self._transport = transport
-                    self._connect(headers, versions, host, heartBeats, connectedTimeout)
-                    break
-        except StompConnectionError as e:
-            self.log.error('Reconnect failed [%s]' % e)
-            raise
+        for (broker, connectDelay) in self._failover:
+            transport = self._transportFactory(
+                broker['host'], broker['port'], sslContext=self._config.sslContext,
+            )
+            if connectDelay:
+                self.log.debug('Delaying connect attempt for %d ms' % int(connectDelay * 1000))
+                time.sleep(connectDelay)
+            self.log.info('Connecting to %s ...' % transport)
+            try:
+                transport.connect(connectTimeout)
+            except StompConnectionError as e:
+                self.log.warning('Could not connect to %s [%s]' % (transport, e))
+            else:
+                self.log.info('Connection established')
+                self._transport = transport
+                self._connect(headers, versions, host, heartBeats, connectedTimeout)
+                break
 
     def _connect(self, headers, versions, host, heartBeats, timeout):
         frame = self.session.connect(self._config.login, self._config.passcode, headers, versions, host, heartBeats)
